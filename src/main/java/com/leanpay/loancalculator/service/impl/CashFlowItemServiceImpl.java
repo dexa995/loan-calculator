@@ -28,7 +28,6 @@ public class CashFlowItemServiceImpl implements CashFlowItemService {
 	private final CashFlowItemMapper cashFlowItemMapper;
 	@Override
 	public List<CashFlowItemResponseDto> generateInstallmentPlan(Long cashFlowId) {
-		//Exception handling
 		CashFlow cashFlow = cashFlowRepository.findById(cashFlowId).orElseThrow();
 
 		BigDecimal principal = cashFlow.getLoanAmount();
@@ -36,32 +35,36 @@ public class CashFlowItemServiceImpl implements CashFlowItemService {
 		BigDecimal annualRate = cashFlow.getInterestRate();
 		BigDecimal fixedInstallment = cashFlow.getInstallmentAmount();
 
-		// Calculate monthly interest rate
 		BigDecimal monthlyRate = annualRate
-			.divide(BigDecimal.valueOf(12), RoundingMode.HALF_UP)
-			.divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
+			.divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP)
+			.divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP); // koristi više decimala za internu preciznost
 
 		BigDecimal remaining = principal;
 		List<CashFlowItem> items = new ArrayList<>();
 
 		for (int i = 1; i <= term; i++) {
 			BigDecimal interest = remaining.multiply(monthlyRate).setScale(2, RoundingMode.HALF_UP);
-			BigDecimal principalPart = fixedInstallment.subtract(interest).setScale(2, RoundingMode.HALF_UP);
+			BigDecimal principalPart;
+			BigDecimal installment;
+			BigDecimal newRemaining;
 
-			// Adjust last installment if rounding caused underpayment
-			if (i == term && remaining.compareTo(principalPart) < 0) {
-				principalPart = remaining;
-				fixedInstallment = principalPart.add(interest).setScale(2, RoundingMode.HALF_UP);
+			if (i == term) {
+				// Last installment: clean remaining
+				principalPart = remaining.setScale(2, RoundingMode.HALF_UP);
+				installment = principalPart.add(interest).setScale(2, RoundingMode.HALF_UP);
+				newRemaining = BigDecimal.ZERO;
+			} else {
+				principalPart = fixedInstallment.subtract(interest).setScale(2, RoundingMode.HALF_UP);
+				installment = fixedInstallment;
+				newRemaining = remaining.subtract(principalPart).setScale(2, RoundingMode.HALF_UP);
 			}
-
-			BigDecimal newRemaining = remaining.subtract(principalPart).setScale(2, RoundingMode.HALF_UP);
 
 			CashFlowItem item = new CashFlowItem();
 			item.setCashFlow(cashFlow);
 			item.setMonth(i);
 			item.setPrincipalAmount(principalPart);
 			item.setInterestAmount(interest);
-			item.setInstallmentAmount(fixedInstallment);
+			item.setInstallmentAmount(installment);
 			item.setLoanBalance(newRemaining);
 
 			items.add(item);
@@ -70,4 +73,5 @@ public class CashFlowItemServiceImpl implements CashFlowItemService {
 
 		return cashFlowItemMapper.toDtoList(cashFlowItemRepository.saveAll(items));
 	}
+
 }
