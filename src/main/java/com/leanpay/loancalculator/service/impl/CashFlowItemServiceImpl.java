@@ -2,6 +2,7 @@ package com.leanpay.loancalculator.service.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,19 @@ public class CashFlowItemServiceImpl implements CashFlowItemService {
 
 		BigDecimal monthlyRate = annualRate
 			.divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP)
-			.divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP); // koristi više decimala za internu preciznost
+			.divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP); // veća preciznost interno
+
+		LocalDate createdDate = cashFlow.getCreated().toLocalDate();
+		int dayOfMonth = createdDate.getDayOfMonth();
+
+		// Prvi datum uplate: isti dan meseca sledećeg meseca, ili poslednji dan ako ne postoji
+		LocalDate firstPaymentDate = createdDate.plusMonths(1);
+		int lastDayOfMonth = firstPaymentDate.lengthOfMonth();
+		if (dayOfMonth > lastDayOfMonth) {
+			firstPaymentDate = firstPaymentDate.withDayOfMonth(lastDayOfMonth);
+		} else {
+			firstPaymentDate = firstPaymentDate.withDayOfMonth(dayOfMonth);
+		}
 
 		BigDecimal remaining = principal;
 		List<CashFlowItem> items = new ArrayList<>();
@@ -49,7 +62,6 @@ public class CashFlowItemServiceImpl implements CashFlowItemService {
 			BigDecimal newRemaining;
 
 			if (i == term) {
-				// Last installment: clean remaining
 				principalPart = remaining.setScale(2, RoundingMode.HALF_UP);
 				installment = principalPart.add(interest).setScale(2, RoundingMode.HALF_UP);
 				newRemaining = BigDecimal.ZERO;
@@ -62,6 +74,7 @@ public class CashFlowItemServiceImpl implements CashFlowItemService {
 			CashFlowItem item = new CashFlowItem();
 			item.setCashFlow(cashFlow);
 			item.setMonth(i);
+			item.setPaymentDate(firstPaymentDate.plusMonths(i - 1));
 			item.setPrincipalAmount(principalPart);
 			item.setInterestAmount(interest);
 			item.setInstallmentAmount(installment);
