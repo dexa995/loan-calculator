@@ -18,6 +18,7 @@ import com.leanpay.loancalculator.model.CashFlowItem;
 import com.leanpay.loancalculator.repository.CashFlowRepository;
 import com.leanpay.loancalculator.service.CashFlowItemService;
 import com.leanpay.loancalculator.service.CashFlowService;
+import com.leanpay.loancalculator.util.InterestRateUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,8 +29,6 @@ public class CashFlowServiceImpl implements CashFlowService {
 
 	private final CashFlowRepository cashFlowRepository;
 	private final CashFlowItemService cashFlowItemService;
-	private final CashFlowMapper cashFlowMapper;
-	private final CashFlowItemMapper cashFlowItemMapper;
 	@Override
 	public CashFlowResponseDto generate(CreateCashFlowDto cashFlowDto) {
 		BigDecimal installmentAmount = calculateInstallmentAmount(cashFlowDto);
@@ -68,17 +67,8 @@ public class CashFlowServiceImpl implements CashFlowService {
 	}
 
 	private BigDecimal calculateInstallmentAmount(CreateCashFlowDto cashFlowDto){
-		// Convert annual interest rate to monthly rate: (annual / 12 / 100)
-		BigDecimal interestRate = new BigDecimal(cashFlowDto.interestRate());
 		BigDecimal loanAmount = new BigDecimal(cashFlowDto.loanAmount());
-
-		BigDecimal monthlyInterestRate = interestRate
-			.divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP)
-			.divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
-
-		System.out.println(monthlyInterestRate);
-		System.out.println(interestRate);
-		System.out.println(loanAmount);
+		BigDecimal monthlyInterestRate = InterestRateUtils.calculateMonthlyInterest(new BigDecimal(cashFlowDto.interestRate()));
 
 		// (1 + monthlyInterestRate)^numberOfInstallments
 		BigDecimal onePlusRate = BigDecimal.ONE.add(monthlyInterestRate);

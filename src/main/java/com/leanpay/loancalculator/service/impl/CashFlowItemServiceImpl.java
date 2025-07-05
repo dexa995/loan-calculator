@@ -16,6 +16,7 @@ import com.leanpay.loancalculator.model.CashFlowItem;
 import com.leanpay.loancalculator.repository.CashFlowItemRepository;
 import com.leanpay.loancalculator.repository.CashFlowRepository;
 import com.leanpay.loancalculator.service.CashFlowItemService;
+import com.leanpay.loancalculator.util.InterestRateUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,22 +24,20 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class CashFlowItemServiceImpl implements CashFlowItemService {
+
 	private final CashFlowRepository cashFlowRepository;
 	private final CashFlowItemRepository cashFlowItemRepository;
-
 	private final CashFlowItemMapper cashFlowItemMapper;
+
 	@Override
 	public List<CashFlowItemResponseDto> generateInstallmentPlan(Long cashFlowId) {
 		CashFlow cashFlow = cashFlowRepository.findById(cashFlowId).orElseThrow();
 
 		BigDecimal principal = cashFlow.getLoanAmount();
 		int term = cashFlow.getLoanTerm().intValue();
-		BigDecimal annualRate = cashFlow.getInterestRate();
 		BigDecimal fixedInstallment = cashFlow.getInstallmentAmount();
 
-		BigDecimal monthlyRate = annualRate
-			.divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP)
-			.divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP); // veća preciznost interno
+		BigDecimal monthlyRate = InterestRateUtils.calculateMonthlyInterest(cashFlow.getInterestRate());
 
 		LocalDate createdDate = cashFlow.getCreated().toLocalDate();
 		int dayOfMonth = createdDate.getDayOfMonth();
