@@ -1,12 +1,15 @@
-package com.leanpay.loancalculator.util;
+package com.leanpay.loancalculator.unit.util;
 
 import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class InterestRateUtilsTest {
+import com.leanpay.loancalculator.util.CashFlowCalculatorUtil;
+
+public class CashFlowCalculatorUtilTest {
 
 	@Test
 	void calculateMonthlyInterest_shouldReturnCorrectMonthlyRate() {
@@ -14,7 +17,7 @@ public class InterestRateUtilsTest {
 		BigDecimal annualInterestRate = BigDecimal.valueOf(6.0);
 		BigDecimal expectedMonthlyInterestRate = BigDecimal.valueOf(0.005);
 
-		BigDecimal actualMonthlyInterestRate = InterestRateUtils.calculateMonthlyInterest(annualInterestRate);
+		BigDecimal actualMonthlyInterestRate = CashFlowCalculatorUtil.calculateMonthlyInterest(annualInterestRate);
 
 		assertThat(actualMonthlyInterestRate).isEqualByComparingTo(expectedMonthlyInterestRate);
 	}
@@ -24,9 +27,17 @@ public class InterestRateUtilsTest {
 		BigDecimal annualInterestRate = BigDecimal.ZERO;
 		BigDecimal expectedMonthlyInterestRate = BigDecimal.ZERO;
 
-		BigDecimal actualMonthlyInterestRate = InterestRateUtils.calculateMonthlyInterest(annualInterestRate);
+		BigDecimal actualMonthlyInterestRate = CashFlowCalculatorUtil.calculateMonthlyInterest(annualInterestRate);
 
 		assertThat(actualMonthlyInterestRate).isEqualByComparingTo(expectedMonthlyInterestRate);
+	}
+
+	@Test
+	void calculateMonthlyInterest_shouldThrowException_whenMonthlyInterestRateIsLessThanZero() {
+		BigDecimal annualInterestRate = BigDecimal.valueOf(-6.0);
+
+		assertThatThrownBy(() -> CashFlowCalculatorUtil.calculateMonthlyInterest(annualInterestRate))
+		.isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
@@ -34,7 +45,7 @@ public class InterestRateUtilsTest {
 		BigDecimal annualInterestRate = BigDecimal.valueOf(1200.0);
 		BigDecimal expectedMonthlyInterestRate = BigDecimal.valueOf(1.0);
 
-		BigDecimal actualMonthlyInterestRate = InterestRateUtils.calculateMonthlyInterest(annualInterestRate);
+		BigDecimal actualMonthlyInterestRate = CashFlowCalculatorUtil.calculateMonthlyInterest(annualInterestRate);
 
 		assertThat(actualMonthlyInterestRate).isEqualByComparingTo(expectedMonthlyInterestRate);
 	}

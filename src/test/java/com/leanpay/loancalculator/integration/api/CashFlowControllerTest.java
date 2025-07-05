@@ -1,4 +1,4 @@
-package com.leanpay.loancalculator.api;
+package com.leanpay.loancalculator.integration.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 import com.leanpay.loancalculator.api.request.CreateCashFlowDto;
 import com.leanpay.loancalculator.api.response.CashFlowResponseDto;
@@ -39,6 +40,8 @@ public class CashFlowControllerTest {
 		assertThat(response.getBody()).isNotNull();
 		assertThat(response.getBody().loanAmount()).isEqualByComparingTo("1000");
 		assertThat(response.getBody().cashFlowItems()).hasSize(24);
+		//assertThat(response.getBody()
+		//	.cashFlowItems()).allSatisfy((item) -> assertThat(item.installmentAmount()).isLessThanOrEqualTo(new BigDecimal(44.59)));
 	}
 
 	@Test

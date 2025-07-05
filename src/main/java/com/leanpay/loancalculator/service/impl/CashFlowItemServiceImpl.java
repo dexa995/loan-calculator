@@ -16,7 +16,7 @@ import com.leanpay.loancalculator.model.CashFlowItem;
 import com.leanpay.loancalculator.repository.CashFlowItemRepository;
 import com.leanpay.loancalculator.repository.CashFlowRepository;
 import com.leanpay.loancalculator.service.CashFlowItemService;
-import com.leanpay.loancalculator.util.InterestRateUtils;
+import com.leanpay.loancalculator.util.CashFlowCalculatorUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,7 +37,7 @@ public class CashFlowItemServiceImpl implements CashFlowItemService {
 		int term = cashFlow.getLoanTerm().intValue();
 		BigDecimal fixedInstallment = cashFlow.getInstallmentAmount();
 
-		BigDecimal monthlyRate = InterestRateUtils.calculateMonthlyInterest(cashFlow.getInterestRate());
+		BigDecimal monthlyRate = CashFlowCalculatorUtil.calculateMonthlyInterest(cashFlow.getInterestRate());
 
 		LocalDate createdDate = cashFlow.getCreated().toLocalDate();
 		int dayOfMonth = createdDate.getDayOfMonth();
