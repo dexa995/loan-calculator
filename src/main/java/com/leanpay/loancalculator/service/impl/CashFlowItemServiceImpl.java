@@ -42,7 +42,7 @@ public class CashFlowItemServiceImpl implements CashFlowItemService {
 		LocalDate createdDate = cashFlow.getCreated().toLocalDate();
 		int dayOfMonth = createdDate.getDayOfMonth();
 
-		// Prvi datum uplate: isti dan meseca sledećeg meseca, ili poslednji dan ako ne postoji
+		// prvi datum uplate: isti dan meseca sledeceg meseca, ili poslednji dan ako ne postoji
 		LocalDate firstPaymentDate = createdDate.plusMonths(1);
 		int lastDayOfMonth = firstPaymentDate.lengthOfMonth();
 		if (dayOfMonth > lastDayOfMonth) {
