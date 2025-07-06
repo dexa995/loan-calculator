@@ -3,9 +3,11 @@ package com.leanpay.loancalculator.unit.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.leanpay.loancalculator.api.request.CreateCashFlowDto;
 import com.leanpay.loancalculator.api.response.CashFlowResponseDto;
+import com.leanpay.loancalculator.mapper.CashFlowMapper;
 import com.leanpay.loancalculator.model.CashFlow;
 import com.leanpay.loancalculator.repository.CashFlowRepository;
 import com.leanpay.loancalculator.service.CashFlowItemService;
@@ -32,6 +35,8 @@ public class CashFlowServiceTest {
 	private CashFlowRepository cashFlowRepository;
 	@Mock
 	private CashFlowItemService cashFlowItemService;
+	@Mock
+	private CashFlowMapper  cashFlowMapper;
 
 
 	@Test
@@ -41,6 +46,8 @@ public class CashFlowServiceTest {
 		when(cashFlowItemService.generateInstallmentPlan(anyLong())).thenReturn(new ArrayList<>());
 
 		CreateCashFlowDto dto = new CreateCashFlowDto(15000.0, 6.0, 8L);
+
+		//when(cashFlowMapper.toDto(any(CashFlow.class))).thenReturn(mockCashFlowResponseDto());
 		CashFlowResponseDto response = cashFlowServiceImpl.generate(dto);
 		assertThat(response).isNotNull();
 		assertThat(response.loanAmount()).isEqualByComparingTo(BigDecimal.valueOf(15000));
@@ -60,5 +67,19 @@ public class CashFlowServiceTest {
 		cashFlow.setLoanTerm(8L);
 
 		return cashFlow;
+	}
+
+	private CashFlowResponseDto mockCashFlowResponseDto() {
+		return new CashFlowResponseDto(
+			1L,
+			new BigDecimal("10000.00"),
+			12L,
+			LocalDateTime.of(2025, 1, 1, 10, 0),
+			new BigDecimal("5.5"),
+			new BigDecimal("600.00"),
+			new BigDecimal("10600.00"),
+			new BigDecimal("883.33"),
+			new ArrayList<>()
+			);
 	}
 }

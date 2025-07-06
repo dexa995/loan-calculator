@@ -31,6 +31,7 @@ public class CashFlowServiceTest {
 	void generateShouldReturnCashFlowResponseDto_whenDtoIsValid() {
 		CreateCashFlowDto dto = new CreateCashFlowDto(15000.0, 6.0, 8L);
 		CashFlowResponseDto response = cashFlowService.generate(dto);
+
 		assertThat(response).isNotNull();
 		assertThat(response.loanAmount()).isEqualByComparingTo(BigDecimal.valueOf(15000));
 		assertThat(response.loanTerm()).isEqualTo(8);
