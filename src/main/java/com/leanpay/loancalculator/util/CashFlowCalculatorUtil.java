@@ -15,6 +15,11 @@ public final class CashFlowCalculatorUtil {
 
 		validate(loanAmount, interestRate, loanTerm);
 
+		if (interestRate.compareTo(BigDecimal.ZERO) == 0) {
+			return loanAmount
+				.divide(BigDecimal.valueOf(loanTerm), 2, RoundingMode.HALF_UP);
+		}
+
 		BigDecimal monthlyInterestRate = calculateMonthlyInterest(interestRate);
 
 		// (1 + monthlyInterestRate)^numberOfInstallments
