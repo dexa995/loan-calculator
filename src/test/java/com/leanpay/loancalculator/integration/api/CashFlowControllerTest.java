@@ -1,5 +1,6 @@
 package com.leanpay.loancalculator.integration.api;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +14,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
+import java.math.BigDecimal;
 
 import com.leanpay.loancalculator.api.request.CreateCashFlowDto;
 import com.leanpay.loancalculator.api.response.CashFlowResponseDto;
@@ -40,8 +43,9 @@ public class CashFlowControllerTest {
 		assertThat(response.getBody()).isNotNull();
 		assertThat(response.getBody().loanAmount()).isEqualByComparingTo("1000");
 		assertThat(response.getBody().cashFlowItems()).hasSize(24);
-		//assertThat(response.getBody()
-		//	.cashFlowItems()).allSatisfy((item) -> assertThat(item.installmentAmount()).isLessThanOrEqualTo(new BigDecimal(44.59)));
+		assertThat(response.getBody()
+			.cashFlowItems()).allSatisfy((item) -> assertThat(item.installmentAmount())
+			.isBetween(new BigDecimal("44.58"), new BigDecimal("44.64")));
 	}
 
 	@Test
@@ -64,6 +68,7 @@ public class CashFlowControllerTest {
 		);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		Assertions.assertNotNull(response.getBody());
 		assertThat(response.getBody().cashFlowItems()).hasSize(12);
 	}
 
