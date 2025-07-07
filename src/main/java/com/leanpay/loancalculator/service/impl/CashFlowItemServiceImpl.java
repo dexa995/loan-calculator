@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.leanpay.loancalculator.api.response.CashFlowItemResponseDto;
+import com.leanpay.loancalculator.exception.CashFlowNotFoundException;
 import com.leanpay.loancalculator.mapper.CashFlowItemMapper;
 import com.leanpay.loancalculator.model.CashFlow;
 import com.leanpay.loancalculator.model.CashFlowItem;
@@ -31,7 +32,7 @@ public class CashFlowItemServiceImpl implements CashFlowItemService {
 
 	@Override
 	public List<CashFlowItemResponseDto> generateInstallmentPlan(Long cashFlowId) {
-		CashFlow cashFlow = cashFlowRepository.findById(cashFlowId).orElseThrow();
+		CashFlow cashFlow = cashFlowRepository.findById(cashFlowId).orElseThrow(CashFlowNotFoundException::new);
 
 		BigDecimal principal = cashFlow.getLoanAmount();
 		int term = cashFlow.getLoanTerm().intValue();
@@ -42,7 +43,6 @@ public class CashFlowItemServiceImpl implements CashFlowItemService {
 		LocalDate createdDate = cashFlow.getCreated().toLocalDate();
 		int dayOfMonth = createdDate.getDayOfMonth();
 
-		// prvi datum uplate: isti dan meseca sledeceg meseca, ili poslednji dan ako ne postoji
 		LocalDate firstPaymentDate = createdDate.plusMonths(1);
 		int lastDayOfMonth = firstPaymentDate.lengthOfMonth();
 		if (dayOfMonth > lastDayOfMonth) {

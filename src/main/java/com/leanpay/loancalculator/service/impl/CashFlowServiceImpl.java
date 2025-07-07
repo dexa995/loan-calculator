@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.leanpay.loancalculator.api.request.CreateCashFlowDto;
 import com.leanpay.loancalculator.api.response.CashFlowItemResponseDto;
 import com.leanpay.loancalculator.api.response.CashFlowResponseDto;
+import com.leanpay.loancalculator.exception.CashFlowNotFoundException;
 import com.leanpay.loancalculator.mapper.CashFlowMapper;
 import com.leanpay.loancalculator.model.CashFlow;
 import com.leanpay.loancalculator.repository.CashFlowRepository;
@@ -73,6 +74,13 @@ public class CashFlowServiceImpl implements CashFlowService {
 
 			});
 
+	}
+
+	@Override
+	public CashFlowResponseDto find(Long id) {
+		return cashFlowRepository.findById(id)
+			.map(cashFlowMapper::toDto)
+			.orElseThrow(CashFlowNotFoundException::new);
 	}
 
 }

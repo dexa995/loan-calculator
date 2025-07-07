@@ -6,4 +6,6 @@ import com.leanpay.loancalculator.model.CashFlow;
 
 public interface CashFlowService {
 	CashFlowResponseDto generate(CreateCashFlowDto cashFlowDto);
+
+	CashFlowResponseDto find(Long id);
 }
