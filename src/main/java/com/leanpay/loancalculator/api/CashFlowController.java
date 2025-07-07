@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.leanpay.loancalculator.api.request.CreateCashFlowDto;
 import com.leanpay.loancalculator.api.response.CashFlowResponseDto;
-import com.leanpay.loancalculator.model.CashFlow;
 import com.leanpay.loancalculator.service.CashFlowService;
 
 import jakarta.validation.Valid;
