@@ -46,6 +46,10 @@ This is a simple Spring Boot application that calculates loan repayment plans ba
     ```bash
     docker-compose up --build -d
     ```
+    2.3.After successfully starting the application, you can find Swagger endpoints on:
+    ```bash
+    http://localhost:8080/swagger-ui/index.html
+    ```
 
 3. Available API endpoints:
 
