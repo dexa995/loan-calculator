@@ -73,9 +73,10 @@ public class CashFlowItemServiceTest {
 	void shouldThrowExceptionWhenCashFlowNotFound() {
 		when(cashFlowRepository.findById(999L)).thenReturn(Optional.empty());
 
-		assertThrows(CashFlowNotFoundException.class, () -> {
-			cashFlowItemServiceImpl.generateInstallmentPlan(999L);
-		});
+		assertThrows(CashFlowNotFoundException.class,
+			() -> {
+				cashFlowItemServiceImpl.generateInstallmentPlan(999L);
+			});
 	}
 
 }
