@@ -36,8 +36,15 @@ This is a simple Spring Boot application that calculates loan repayment plans ba
 
 2. Run the application:
 
+    Prerequisites: Docker
+
+    2.1.Navigate to the docker folder
     ```bash
-    ./mvnw spring-boot:run
+    cd docker
+    ```
+    2.2.Start the application using command:
+    ```bash
+    docker-compose up --build -d
     ```
 
 3. Available API endpoints:
