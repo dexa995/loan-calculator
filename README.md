@@ -11,7 +11,7 @@ This is a simple Spring Boot application that calculates loan repayment plans ba
 
 ## Technologies
 
-- Java 17
+- Java 21
 - Spring Boot
 - Spring Data JPA
 - PostgreSQL (or any relational database)
@@ -26,7 +26,7 @@ This is a simple Spring Boot application that calculates loan repayment plans ba
 1. Clone the repository:
 
     ```bash
-    git clone <your-repo-url>
+    git clone https://github.com/dexa995/loan-calculator
     ```
 
 2. Run the application:
