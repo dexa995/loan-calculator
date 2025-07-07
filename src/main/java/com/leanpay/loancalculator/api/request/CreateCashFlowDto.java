@@ -14,8 +14,8 @@ public record CreateCashFlowDto(
 	@Positive(message = "Loan amount must be higher than 0")
 	Double loanAmount,
 	@NotNull(message = "Interest rate is required")
-	@DecimalMin(value = "0.0", inclusive = true, message = "Interest rate cannot be negative")
-	@DecimalMax(value = "100.00", inclusive = true, message = "Interest rate must be realistic (max 100%)")
+	@DecimalMin(value = "0.0", message = "Interest rate cannot be negative")
+	@DecimalMax(value = "100.00", message = "Interest rate must be realistic (max 100%)")
 	Double interestRate,
 	@NotNull(message = "Loan term is required")
 	@Min(value = 1, message = "Loan term must be at least 1 month")
