@@ -10,8 +10,8 @@ import lombok.Builder;
 
 @Builder
 public record CreateCashFlowDto(
-	//@NotNull(message = "Loan amount is required")
-	//@Positive(message = "Loan amount must be higher than 0")
+	@NotNull(message = "Loan amount is required")
+	@Positive(message = "Loan amount must be higher than 0")
 	Double loanAmount,
 	@NotNull(message = "Interest rate is required")
 	@DecimalMin(value = "0.0", inclusive = true, message = "Interest rate cannot be negative")

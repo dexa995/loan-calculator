@@ -12,6 +12,19 @@ services:
       - "15432:5432"
     volumes:
       - db:/var/lib/postgresql/data
+  loan-calculator:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    container_name: loan-calculator
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - db
 
 volumes:
   db:
