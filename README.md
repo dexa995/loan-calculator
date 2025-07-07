@@ -21,6 +21,11 @@ This is a simple Spring Boot application that calculates loan repayment plans ba
 
 ![UML Diagram](docs/loan-calculator-class-diagram.png)
 
+## UML Sequence Diagram
+
+    ![UML Diagram](docs/loan-calculator-sequence-diagram.png)
+
+
 ## Running the Application
 
 1. Clone the repository:
