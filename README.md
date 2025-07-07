@@ -14,7 +14,7 @@ This is a simple Spring Boot application that calculates loan repayment plans ba
 - Java 21
 - Spring Boot
 - Spring Data JPA
-- PostgreSQL (or any relational database)
+- PostgreSQL
 - PlantUML for diagrams
 
 ## UML Class Diagram
@@ -39,7 +39,3 @@ This is a simple Spring Boot application that calculates loan repayment plans ba
 
 - `POST /cash-flows` - create and generate loan repayment plan
 - `GET /cash-flows/{id}` - get loan details and repayment plan
-
-## Contact
-
-For questions or suggestions, feel free to reach out.
