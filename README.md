@@ -1,57 +1,89 @@
-# Loan Calculator Application
+# 💰 Loan Calculator Application
 
 This is a simple Spring Boot application that calculates loan repayment plans based on given parameters.
 
-## Features
+---
 
-- Generate amortization plan based on loan amount, term, and interest rate
-- Retrieve loan details and repayment schedule via REST API
-- Uses JPA entities `CashFlow` and `CashFlowItem`
-- Utilizes `CashFlowCalculatorUtil` for financial calculations
+## ✨ Features
 
-## Technologies
+- 📈 Generate amortization plans based on loan amount, term, and interest rate
+- 🔍 Retrieve loan details and repayment schedules via REST API
+- 🧩 Uses JPA entities: `CashFlow` and `CashFlowItem`
+- 🧮 Utilizes `CashFlowCalculatorUtil` for financial calculations
+
+---
+
+## 🛠 Technologies Used
 
 - Java 21
-- Spring Boot
+- Spring Boot 3
 - Spring Data JPA
 - PostgreSQL
-- PlantUML for diagrams
+- PlantUML (for class and sequence diagrams)
 
-## UML Class Diagram
+---
 
-![UML Diagram](docs/loan-calculator-class-diagram.png)
+## 🧭 UML Diagrams
 
-## UML Sequence Diagram
+### Class Diagram
+![Class Diagram](docs/loan-calculator-class-diagram.png)
 
-![UML Diagram](docs/loan-calculator-sequence-diagram.png)
+### Sequence Diagram
+![Sequence Diagram](docs/loan-calculator-sequence-diagram.png)
 
+---
 
-## Running the Application
+## 🚀 Getting Started
 
-1. Clone the repository:
+### 1. Clone the Repository
 
-    ```bash
-    git clone https://github.com/dexa995/loan-calculator
-    ```
+```bash
+git clone https://github.com/dexa995/loan-calculator
+cd loan-calculator
+```
 
-2. Run the application:
+### 2. Run with Docker Compose
 
-    Prerequisites: Docker
+**Prerequisite:** [Docker](https://www.docker.com/) installed.
 
-    2.1.Navigate to the docker folder
-    ```bash
-    cd docker
-    ```
-    2.2.Start the application using command:
-    ```bash
-    docker-compose up --build -d
-    ```
-    2.3.After successfully starting the application, you can find Swagger endpoints on:
-    ```bash
-    http://localhost:8080/swagger-ui/index.html
-    ```
+#### Step 2.1: Navigate to the Docker folder
 
-3. Available API endpoints:
+```bash
+cd docker
+```
 
-- `POST /cash-flows` - create and generate loan repayment plan
-- `GET /cash-flows/{id}` - get loan details and repayment plan
+#### Step 2.2: Start the application
+
+```bash
+docker-compose up --build -d
+```
+
+This will:
+- Build the Spring Boot application
+- Start a PostgreSQL container
+- Launch the application at `http://localhost:8080`
+
+---
+
+## 🔌 API Endpoints
+
+| Method | Endpoint              | Description                                     |
+|--------|-----------------------|-------------------------------------------------|
+| POST   | `/cash-flows`         | Create a new loan and generate a repayment plan |
+| GET    | `/cash-flows/{id}`    | Retrieve loan details and amortization plan     |
+
+---
+
+## 🧹 Stopping the App
+
+To stop and remove containers:
+
+```bash
+docker-compose down
+```
+
+To also remove the associated volumes:
+
+```bash
+docker-compose down -v
+```
