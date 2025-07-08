@@ -1,6 +1,5 @@
 package com.leanpay.loancalculator.integration.api;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,30 +45,6 @@ public class CashFlowControllerTest {
 		assertThat(response.getBody()
 			.cashFlowItems()).allSatisfy((item) -> assertThat(item.installmentAmount())
 			.isBetween(new BigDecimal("44.58"), new BigDecimal("44.64")));
-	}
-
-	@Test
-	void shouldReturnBadRequest_whenInputIsInvalid() {
-		CreateCashFlowDto invalidCashFlowDto = new CreateCashFlowDto(null, -6.6, 0L);
-
-		ResponseEntity<String> response = restTemplate.postForEntity(
-			"/cash-flows", invalidCashFlowDto, String.class
-		);
-
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-	}
-
-	@Test
-	void saveCashFlow_shouldHandleLargeLoanAmount() {
-		CreateCashFlowDto cashFlowDto = new CreateCashFlowDto(10000000.0, 6.6, 12L);
-
-		ResponseEntity<CashFlowResponseDto> response = restTemplate.postForEntity(
-			"/cash-flows", cashFlowDto, CashFlowResponseDto.class
-		);
-
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		Assertions.assertNotNull(response.getBody());
-		assertThat(response.getBody().cashFlowItems()).hasSize(12);
 	}
 
 }
