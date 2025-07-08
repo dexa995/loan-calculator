@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.leanpay.loancalculator.api.response.error.ErrorResponse;
 import com.leanpay.loancalculator.exception.BaseException;
-import com.leanpay.loancalculator.exception.CashFlowNotFoundException;
 
 import io.swagger.v3.oas.annotations.Hidden;
 
