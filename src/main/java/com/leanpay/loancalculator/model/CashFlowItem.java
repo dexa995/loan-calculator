@@ -3,13 +3,8 @@ package com.leanpay.loancalculator.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,9 +17,8 @@ import lombok.Data;
 @Entity
 @Table(name = "cash_flow_item")
 @Data
-@EntityListeners(AuditingEntityListener.class)
+public class CashFlowItem extends BaseEntity {
 
-public class CashFlowItem extends Auditable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cash_flow_item_id_seq")
 	@SequenceGenerator(name = "cash_flow_item_id_seq", sequenceName = "cash_flow_item_id_seq", allocationSize = 1)
@@ -52,4 +46,5 @@ public class CashFlowItem extends Auditable {
 	@ManyToOne
 	@JoinColumn(name = "cash_flow_id", referencedColumnName = "id")
 	private CashFlow cashFlow;
+
 }

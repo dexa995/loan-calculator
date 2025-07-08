@@ -4,11 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,8 +18,8 @@ import lombok.Data;
 @Entity
 @Table(name = "cash_flow")
 @Data
-@EntityListeners(AuditingEntityListener.class)
-public class CashFlow extends Auditable {
+public class CashFlow extends BaseEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cash_flow_id_seq")
 	@SequenceGenerator(name = "cash_flow_id_seq", sequenceName = "cash_flow_id_seq", allocationSize = 1)
