@@ -40,17 +40,6 @@ public class CashFlowItemServiceImpl implements CashFlowItemService {
 
 		BigDecimal monthlyRate = CashFlowCalculatorUtil.calculateMonthlyInterest(cashFlow.getInterestRate());
 
-		LocalDate createdDate = cashFlow.getCreated().toLocalDate();
-		int dayOfMonth = createdDate.getDayOfMonth();
-
-		LocalDate firstPaymentDate = createdDate.plusMonths(1);
-		int lastDayOfMonth = firstPaymentDate.lengthOfMonth();
-		if (dayOfMonth > lastDayOfMonth) {
-			firstPaymentDate = firstPaymentDate.withDayOfMonth(lastDayOfMonth);
-		} else {
-			firstPaymentDate = firstPaymentDate.withDayOfMonth(dayOfMonth);
-		}
-
 		BigDecimal remaining = principal;
 		List<CashFlowItem> items = new ArrayList<>();
 
@@ -73,7 +62,7 @@ public class CashFlowItemServiceImpl implements CashFlowItemService {
 			CashFlowItem item = new CashFlowItem();
 			item.setCashFlow(cashFlow);
 			item.setMonth(i);
-			item.setPaymentDate(firstPaymentDate.plusMonths(i - 1));
+			item.setPaymentDate(cashFlow.getCreated().toLocalDate().plusMonths(i));
 			item.setPrincipalAmount(principalPart);
 			item.setInterestAmount(interest);
 			item.setInstallmentAmount(installment);
