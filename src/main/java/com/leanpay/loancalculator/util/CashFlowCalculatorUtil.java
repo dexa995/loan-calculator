@@ -28,15 +28,12 @@ public final class CashFlowCalculatorUtil {
 
 		// numerator: r * (1 + r)^n
 		BigDecimal numerator = monthlyInterestRate.multiply(power);
-		System.out.println(numerator);
 
 		// denominator: (1 + r)^n - 1
 		BigDecimal denominator = power.subtract(BigDecimal.ONE);
-		System.out.println(denominator);
 
 		// A = P * (numerator / denominator)
 		BigDecimal monthlyInstallment = loanAmount.multiply(numerator.divide(denominator, RoundingMode.HALF_UP));
-		System.out.println(monthlyInstallment);
 
 		// Final rounded value to 2 decimal places (currency format)
 		return monthlyInstallment.setScale(2, RoundingMode.HALF_UP);

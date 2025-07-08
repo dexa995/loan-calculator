@@ -3,7 +3,6 @@ package com.leanpay.loancalculator.service.impl;
 import java.math.BigDecimal;
 import java.util.List;
 
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,13 +64,6 @@ public class CashFlowServiceImpl implements CashFlowService {
 					.cashFlowItems(cashFlowItems)
 					.created(cashFlow.getCreated())
 					.build();
-
-				//not supported with records
-//		return cashFlowMapper.toDto(cashFlow)
-//			.toBuilder()
-//			.cashFlowItems(cashFlowItems)
-//			.build();
-
 			});
 
 	}
