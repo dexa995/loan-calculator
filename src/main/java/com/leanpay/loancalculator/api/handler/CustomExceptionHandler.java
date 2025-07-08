@@ -36,14 +36,5 @@ public class CustomExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 	}
 
-	@ExceptionHandler(CashFlowNotFoundException.class)
-	public ResponseEntity<ErrorResponse> handleNotFound(CashFlowNotFoundException ex) {
-		ErrorResponse errorResponse = ErrorResponse.builder()
-			.status(HttpStatus.NOT_FOUND)
-			.message(ex.getMessage())
-			.build();
-
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-	}
 
 }

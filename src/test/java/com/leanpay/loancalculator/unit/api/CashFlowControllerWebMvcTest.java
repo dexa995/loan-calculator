@@ -114,12 +114,12 @@ public class CashFlowControllerWebMvcTest {
 	}
 
 	@Test
-	void shouldReturn404_whenCashFlowNotFound() throws Exception {
+	void shouldReturnException_whenCashFlowNotFound() throws Exception {
 		Mockito.when(cashFlowService.find(eq(99L)))
 			.thenThrow(new CashFlowNotFoundException());
 
 		mockMvc.perform(get("/cash-flows/99"))
-			.andExpect(status().isNotFound());
+			.andExpect(status().isInternalServerError());
 	}
 
 }
